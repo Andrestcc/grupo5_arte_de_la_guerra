@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Arte de la Guerra aplicado a los Negocios</title>
+    
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fuente Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Estilos para la barra de navegación lateral */
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        /* Clase para mostrar el sidebar en móvil */
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        
+        /* Ocultar scrollbar pero permitir scroll */
+        .content-area::-webkit-scrollbar {
+            display: none;
+        }
+        .content-area {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        /* Clase para la página de contenido activa */
+        .page-content {
+            display: none; /* Oculto por defecto */
+        }
+        .page-content.active {
+            display: block; /* Visible cuando está activo */
+        }
+        /* Estilo para el enlace activo en la barra lateral - CAMBIO a TEAL */
+        .sidebar-link.active {
+            background-color: #0d9488; /* Tailwind 'teal-600' */
+            color: white;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- INICIO: BARRA DE NAVEGACIÓN MÓVIL - CAMBIO a gray-800 -->
+    <header class="md:hidden bg-gray-800 text-white p-4 flex justify-between items-center fixed top-0 left-0 right-0 z-40 shadow-lg">
+        <h1 class="text-lg font-semibold">GRUPO 05</h1>
+        <button id="menu-toggle" class="text-white p-2 rounded-md hover:bg-gray-700" aria-controls="sidebar" aria-expanded="false">
+            <span class="sr-only">Abrir menú</span>
+            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+        </button>
+    </header>
+    <!-- FIN: BARRA DE NAVEGACIÓN MÓVIL -->
+
+    <!-- INICIO: OVERLAY MÓVIL -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-20 hidden md:hidden"></div>
+    <!-- FIN: OVERLAY MÓVIL -->
+
+    <div class="flex h-screen pt-16 md:pt-0"> <!-- 'pt-16' para dejar espacio al header móvil, 'md:pt-0' para resetear en desktop -->
+
+        <!-- INICIO: BARRA LATERAL (SIDEBAR) - CAMBIO a gray-800 -->
+        <aside id="sidebar" class="sidebar w-64 bg-gray-800 text-gray-200 p-6 flex-shrink-0
+                         fixed inset-y-0 left-0 z-30
+                         -translate-x-full md:static md:translate-x-0">
+            
+            <!-- Botón de cerrar para móvil -->
+            <div class="flex justify-between items-center md:hidden mb-4">
+                <h2 class="text-xl font-semibold text-white">Menú</h2>
+                <button id="menu-close" class="text-gray-300 hover:text-white p-2 rounded-md">
+                    <span class="sr-only">Cerrar menú</span>
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Título para Desktop -->
+            <h2 class="text-xl font-semibold text-white mb-6 hidden md:block">GRUPO 05</h2>
+
+            <nav>
+                <ul class="space-y-2">
+                    <li><a href="#" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-gray-700" onclick="showPage('portada', this)">Portada</a></li>
+                    <li><a href="#" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-gray-700" onclick="showPage('contexto', this)">1. Contexto</a></li>
+                    <li><a href="#" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-gray-700" onclick="showPage('campo', this)">2. Campo de Batalla</a></li>
+                    <li><a href="#" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-gray-700" onclick="showPage('liderazgo', this)">3. Liderazgo</a></li>
+                    <li><a href="#" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-gray-700" onclick="showPage('inteligencia', this)">4. Conocimiento</a></li>
+                    <li><a href="#" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-gray-700" onclick="showPage('estrategia', this)">5. Estrategia</a></li>
+                    <li><a href="#" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-gray-700" onclick="showPage('marketing', this)">6. Marketing</a></li>
+                    <li><a href="#" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-gray-700" onclick="showPage('crm', this)">7. CRM</a></li>
+                    <li><a href="#" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-gray-700" onclick="showPage('conclusion', this)">8. Conclusiones</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <!-- FIN: BARRA LATERAL (SIDEBAR) -->
+
+        <!-- INICIO: ÁREA DE CONTENIDO PRINCIPAL -->
+        <main class="content-area flex-1 overflow-y-auto p-6 md:p-12">
+
+            <!-- Página 1: Portada -->
+            <section id="page-portada" class="page-content active">
+                
+                <div class="flex flex-col items-center">
+                    
+                    <!-- Card contenedor principal de la portada -->
+                    <div class="bg-white rounded-xl shadow-2xl w-full max-w-6xl overflow-hidden">
+                        
+                        <!-- Sección Hero (Superior) con gradiente - CAMBIO a TEAL -->
+                        <div class="p-6 md:p-8 bg-gradient-to-r from-teal-700 to-teal-600 text-white">
+                            
+                            <!-- Contenedor flex para logo y títulos -->
+                            <div class="flex items-center mb-6">
+                                
+                                <div class="flex-shrink-0 mr-6">
+                                    <img src="https://raw.githubusercontent.com/Andrestcc/grupo5_arte_de_la_guerra/main/UNJFSC.png" alt="Logo UNJFSC" class="w-24 h-24 object-contain">
+                                </div>
+                                
+                                <div>
+                                    <h4 class="text-sm md:text-base font-medium text-teal-200 tracking-wider mb-1">
+                                        Universidad Nacional José Faustino Sánchez Carrión
+                                    </h4>
+                                    <h4 class="text-sm md:text-base font-medium text-teal-200 tracking-wider mb-1">
+                                        Facultad de Ingeniería Industrial, Sistemas e Informática
+                                    </h4>
+                                    <h1 class="text-3xl md:text-5xl font-bold text-white uppercase leading-tight">
+                                        El arte de la guerra aplicado a los negocios
+                                    </h1>
+                                </div>
+                            </div>
+
+                            <!-- Subtítulo (Curso) -->
+                            <h3 class="text-lg md:text-xl font-semibold text-teal-100 mt-4">
+                                Gestión de Relaciones con Clientes (CRM)
+                            </h3>
+                        </div>
+
+                        <!-- Sección Inferior (Autores y Docente) -->
+                        <div class="p-6 md:p-8">
+                            
+                            <!-- Grid para Autores y Docente -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                                
+                                <div class="md:col-span-2">
+                                    <h5 class="text-lg font-semibold text-gray-800 mb-3">Autores (Grupo 05):</h5>
+                                    
+                                    <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-gray-700">
+                                        <li>Chávez Cruz, Celio</li>
+                                        <li>Chirito Gómez, Lorenzo</li>
+                                        <li>Giraldo Alcantara, Denilson</li>
+                                        <li>Espejo Blas, Luis</li>
+                                        <li>Papa Reyes, Carlos</li>
+                                        <li>Párraga Cabrel, Alexis</li>
+                                        <li>Tahua Castillo, Cristhian</li>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h5 class="text-lg font-semibold text-gray-800 mb-3">Docente:</h5>
+                                    <p class="text-gray-700">Costilla Retuerto Fernando Sósimo</p>
+                                </div>
+                            </div>
+
+                            <!-- Divisor y Año -->
+                            <div class="border-t border-gray-200 mt-8 pt-6 text-center">
+                                <p class="text-gray-500">2025</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            <!-- FIN DE LA PORTADA MEJORADA -->
+
+            <!-- Página 2: Contexto Histórico -->
+            <section id="page-contexto" class="page-content">
+                <!-- INICIO: Wrapper centrado con max-w -->
+                <div class="flex flex-col items-center">
+                    <!-- CAMBIO: Se cambió padding de md:p-12 a md:p-8 -->
+                    <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-6xl">
+                        <!-- Título rediseñado con número en círculo - CAMBIO a TEAL -->
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6 flex items-center">
+                            <span class="bg-teal-600 text-white text-lg font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4 shadow-md">1</span>
+                            Contexto: Las Raíces Eternas de la Estrategia
+                        </h2>
+                        
+                        
+                        <h3 class="text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-4">¿Quién fue Sun Tzu?</h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            孙子 (Sun Tzu, "Maestro Sun") fue un general, estratega militar y filósofo de la antigua China (Sun Wu).Quien no solo fue un pensador, sino un general victorioso al servicio del rey Helü de Wu, lo que le permitió validar sus teorías en el campo de batalla real.
+                        </p>
+
+                        <h3 class="text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-4">Contexto Histórico: China, Siglo V a.C.</h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            La obra fue escrita en una época de turbulencia política, caracterizada por la fragmentación del poder, guerras constantes por la supremacía y la necesidad de innovación militar para sobrevivir. En este contexto, Sun Tzu no escribió un manual de combate, sino un tratado de estrategia suprema que enfatizaba el conocimiento, la adaptabilidad y la victoria sin destrucción.
+                        </p>
+
+                        <h3 class="text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-4">Principios Fundamentales de Sun Tzu</h3>
+                        <!-- 'overflow-x-auto' es clave para que las tablas sean responsivas en móvil -->
+                        <div class="overflow-x-auto rounded-lg border border-gray-200 mt-4">
+                            <table class="w-full text-left divide-y divide-gray-200">
+                                <!-- CAMBIO: bg-teal-50 a bg-teal-100 -->
+                                <thead class="bg-teal-100">
+                                    <tr>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider text-center">Principio</th>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider text-center">¿Qué Significa?</th>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase tracking-wider text-center">Aplicación Empresarial</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium text-gray-800">El Arte de la Guerra se basa en el engaño</td>
+                                        <td class="px-6 py-4 text-gray-700">La percepción y la desinformación son armas más poderosas que la fuerza bruta.</td>
+                                        <td class="px-6 py-4 text-gray-700">Crear estratagemas que confundan al competidor sobre tus verdaderas intenciones.</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium text-gray-800">La mejor victoria es aquella sin luchar</td>
+                                        <td class="px-6 py-4 text-gray-700">Vencer mediante estrategia, inteligencia y posicionamiento superior.</td>
+                                        <td class="px-6 py-4 text-gray-700">Ganar cuota de mercado sin entrar en guerras de precios destructivas.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 class="text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-4">Entonces... ¿Por qué Sun Tzu sigue siendo vigente?</h3>
+                        <p class="text-gray-700 leading-relaxed">
+                            Su vigencia radica en que no escribió sobre tácticas de combate específicas, sino sobre los <strong>principios universales de la competencia</strong>. Al cambiar "ejército" por "empresa" y "terreno militar" por "mercado", sus enseñanzas revelan una sorprendente aplicación a negocios, deportes y diplomacia.
+                        </p>
+                    </div>
+                </div>
+                <!-- FIN: Wrapper centrado -->
+            </section>
+
+            <!-- Página 3: Campo de Batalla -->
+            <section id="page-campo" class="page-content">
+                <!-- INICIO: Wrapper centrado con max-w -->
+                <div class="flex flex-col items-center">
+                    <!-- CAMBIO: Se cambió padding de md:p-12 a md:p-8 -->
+                    <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-6xl">
+                        <!-- Título rediseñado con número en círculo - CAMBIO a TEAL -->
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6 flex items-center">
+                            <span class="bg-teal-600 text-white text-lg font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4 shadow-md">2</span>
+                            El Campo de Batalla: La Empresa como Terreno Estratégico
+                        </h2>
+                        
+                        <h3 class="text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-4">Identificación del Terreno:</h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            El "terreno" de Sun Tzu es el mercado. Un empresario debe identificar dónde compite, evitando dispersar fuerzas.
+                        </p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                            <li><strong>Segmentos de Mercado:</strong> El terreno específico (demográfico, psicográfico). <strong>Ejemplo:</strong> Apple se concentra en el segmento premium.</li>
+                            <li><strong>La Industria:</strong> El perímetro de guerra (tecnología, retail, finanzas). <strong>Ejemplo:</strong> Samsung compite en todos los segmentos, creando múltiples líneas de defensa.</li>
+                            <li><strong>Entorno Económico:</strong> La "estación del año" (ciclos económicos, tendencias). <strong>Ejemplo:</strong> Netflix capitalizó la "estación" de la pandemia.</li>
+                        </ul>
+
+                        <h4 class="text-lg md:text-xl font-semibold text-gray-800 mt-4 mb-2">Caso: Apple vs. Samsung</h4>
+                        <div class="overflow-x-auto rounded-lg border border-gray-200">
+                            <table class="w-full text-left divide-y divide-gray-200">
+                                <!-- CAMBIO: bg-teal-50 a bg-teal-100 -->
+                                <thead class="bg-teal-100">
+                                    <tr>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase text-center">Aspecto</th>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase text-center">Apple</th>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase text-center">Samsung</th>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase text-center">Implicación Estratégica</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">Estrategia</td>
+                                        <td class="px-6 py-4 text-gray-700">Ecosistema cerrado premium</td>
+                                        <td class="px-6 py-4 text-gray-700">Diversificación, múltiples segmentos</td>
+                                        <td class="px-6 py-4 text-gray-700">Apple crea "terreno inexpugnable"; Samsung maximiza alcance.</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">Posicionamiento</td>
+                                        <td class="px-6 py-4 text-gray-700">Lujo, innovación, experiencia</td>
+                                        <td class="px-6 py-4 text-gray-700">Valor, opciones, tecnología</td>
+                                        <td class="px-6 py-4 text-gray-700">Dos "campos de batalla" diferentes.</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">Ventaja</td>
+                                        <td class="px-6 py-4 text-gray-700">Ecosistema integrado (Profundidad)</td>
+                                        <td class="px-6 py-4 text-gray-700">Pantallas plegables, diversidad (Amplitud)</td>
+                                        <td class="px-6 py-4 text-gray-700">Ambas reconocen la IA como el "nuevo terreno".</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 class="text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-4">Recursos: Tropas, Capital Humano y Tecnología</h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            No es suficiente tener talento; debe estar en la posición correcta.
+                        </p>
+                        <div class="overflow-x-auto rounded-lg border border-gray-200">
+                            <table class="w-full text-left divide-y divide-gray-200">
+                                <!-- CAMBIO: bg-teal-50 a bg-teal-100 -->
+                                <thead class="bg-teal-100">
+                                    <tr>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase text-center">Recurso Militar</th>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase text-center">Interpretación Empresarial</th>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase text-center">Ejemplo</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">Tropas de élite</td>
+                                        <td class="px-6 py-4 text-gray-700">Personal experimentado y talento clave</td>
+                                        <td class="px-6 py-4 text-gray-700">Un vendedor veterano cierra más negocios que un novato.</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">Armamento avanzado</td>
+                                        <td class="px-6 py-4 text-gray-700">Tecnología, herramientas e infraestructura</td>
+                                        <td class="px-6 py-4 text-gray-700">Tesla: robótica e IA en manufactura.</td>
+                                    </tr>
+                                    <tr class="hover:bg-50">
+                                        <td class="px-6 py-4 font-medium">Logística</td>
+                                        <td class="px-6 py-4 text-gray-700">Cadena de suministro eficiente</td>
+                                        <td class="px-6 py-4 text-gray-700">Amazon: red logística que define el mercado.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- FIN: Wrapper centrado -->
+            </section>
+
+            <!-- Página 4: Liderazgo -->
+            <section id="page-liderazgo" class="page-content">
+                <!-- INICIO: Wrapper centrado con max-w -->
+                <div class="flex flex-col items-center">
+                    <!-- CAMBIO: Se cambió padding de md:p-12 a md:p-8 -->
+                    <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-6xl">
+                        <!-- Título rediseñado con número en círculo - CAMBIO a TEAL -->
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6 flex items-center">
+                            <span class="bg-teal-600 text-white text-lg font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4 shadow-md">3</span>
+                            Liderazgo: El Comandante Estratega Moderno
+                        </h2>
+                        
+                        <h3 class="text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-4">El Líder como Estratega, no como Guerrero</h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            El general verdadero no pelea en primera línea; diseña el campo de batalla para que la victoria sea inevitable. El CEO moderno debe pensar sistémicamente, anticipar tendencias y mantener la claridad bajo presión.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            <strong>Ejemplo:</strong> Satya Nadella (Microsoft). En lugar de pelear en el terreno perdido de los móviles, identificó un nuevo "campo de batalla": la nube empresarial (Azure), transformando la cultura y duplicando el valor de la compañía.
+                        </p>
+
+                        <h3 class="text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-4">Tabla Comparativa: 5 Virtudes del General vs. CEO Moderno</h3>
+                        <div class="overflow-x-auto rounded-lg border border-gray-200">
+                            <table class="w-full text-left divide-y divide-gray-200">
+                                <!-- CAMBIO: bg-teal-50 a bg-teal-100 -->
+                                <thead class="bg-teal-100">
+                                    <tr>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase text-center">Virtud</th>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase text-center">Competencia CEO Moderno</th>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase text-center">Ejemplo Empresarial</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">Sabiduría</td>
+                                        <td class="px-6 py-4 text-gray-700">Inteligencia estratégica, análisis de mercado</td>
+                                        <td class="px-6 py-4 text-gray-700">Satya Nadella (Microsoft) reconoció la oportunidad en la nube.</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">Sinceridad</td>
+                                        <td class="px-6 py-4 text-gray-700">Autenticidad, transparencia corporativa</td>
+                                        <td class="px-6 py-4 text-gray-700">Tim Cook (Apple): comunicación consistente sobre valores.</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">Benevolencia</td>
+                                        <td class="px-6 py-4 text-gray-700">Empatía con empleados y clientes</td>
+                                        <td class="px-6 py-4 text-gray-700">Jeff Bezos (Amazon): "obsesión por el cliente".</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">Valor</td>
+                                        <td class="px-6 py-4 text-gray-700">Audacia en decisiones, tolerancia al riesgo calculado</td>
+                                        <td class="px-6 py-4 text-gray-700">Elon Musk (SpaceX): inversión total en la empresa.</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">Rigor</td>
+                                        <td class="px-6 py-4 text-gray-700">Excelencia operacional, accountability</td>
+                                        <td class="px-6 py-4 text-gray-700">Amazon: métricas precisas, resultados medibles.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed mt-4 italic">
+                            Sun Tzu coloca sabiduría y sinceridad primero, no fuerza. La competencia se gana con claridad estratégica, no con brutalidad corporativa.
+                        </p>
+
+                        <h3 class="text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-4">Líderes Modernos que Encarnan los Principios</h3>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2">
+                            <li><strong>Steve Jobs (Apple):</strong> "Ganar sin pelear". No derrotó a Nokia o Blackberry en su juego; creó un juego completamente diferente.</li>
+                            <li><strong>Satya Nadella (Microsoft):</strong> "Conoce el terreno". Cambió el terreno de competencia a uno donde Microsoft tenía ventajas.</li>
+                            <li><strong>Elon Musk (Tesla/SpaceX):</strong> "Sorprende al enemigo". Crea nuevos campos de batalla donde la competencia tradicional es débil.</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- FIN: Wrapper centrado -->
+            </section>
+
+            <!-- Página 5: Inteligencia -->
+            <section id="page-inteligencia" class="page-content">
+                <!-- INICIO: Wrapper centrado con max-w -->
+                <div class="flex flex-col items-center">
+                    <!-- CAMBIO: Se cambió padding de md:p-12 a md:p-8 -->
+                    <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-6xl">
+                        <!-- Título rediseñado con número en círculo - CAMBIO a TEAL -->
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6 flex items-center">
+                            <span class="bg-teal-600 text-white text-lg font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4 shadow-md">4</span>
+                            Conocimiento del Mercado: El Espionaje Empresarial
+                        </h2>
+                        
+                        <h3 class="text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-4">De los Espías Militares al Data-Driven Marketing</h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            Sun Tzu subrayaba obsesivamente la importancia de la inteligencia. En los negocios, esto es el análisis de mercado. Las empresas que invierten en investigación (como Netflix y Amazon) tienen una ventaja competitiva masiva.
+                        </p>
+
+                        <h3 class="text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-4">FODA y PESTEL: Campos de Inteligencia Modernos</h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            El <strong>FODA</strong> es el "conocerte a ti mismo" de Sun Tzu (Fortalezas, Debilidades, Oportunidad, Amenazas). El <strong>PESTEL</strong> es el conocimiento del entorno externo (Político, Económico, Social, Tecnológico, Ambiental, Legal).
+                        </p>
+                        <h4 class="text-lg md:text-xl font-semibold text-gray-800 mt-4 mb-2">Análisis PESTEL</h4>
+                        <div class="overflow-x-auto rounded-lg border border-gray-200">
+                            <table class="w-full text-left divide-y divide-gray-200">
+                                <!-- CAMBIO: bg-teal-50 a bg-teal-100 -->
+                                <thead class="bg-teal-100">
+                                    <tr>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase text-center">Factor</th>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase text-center">Definición</th>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase text-center">Ejemplo Empresarial</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">Político</td>
+                                        <td class="px-6 py-4 text-gray-700">Regulaciones gubernamentales</td>
+                                        <td class="px-6 py-4 text-gray-700">Huawei limitado en Occidente por restricciones.</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">Social</td>
+                                        <td class="px-6 py-4 text-gray-700">Tendencias demográficas</td>
+                                        <td class="px-6 py-4 text-gray-700">Demanda creciente de productos sostenibles.</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">Tecnológico</td>
+                                        <td class="px-6 py-4 text-gray-700">Innovación, automatización, IA</td>
+                                        <td class="px-6 py-4 text-gray-700">Transformación digital acelera obsolescencia.</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">Legal</td>
+                                        <td class="px-6 py-4 text-gray-700">Leyes laborales y protección de datos</td>
+                                        <td class="px-6 py-4 text-gray-700">Regulaciones de IA crean nuevas oportunidades.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- FIN: Wrapper centrado -->
+            </section>
+            
+            <!-- Página 6: Estrategia -->
+            <section id="page-estrategia" class="page-content">
+                <!-- INICIO: Wrapper centrado con max-w -->
+                <div class="flex flex-col items-center">
+                    <!-- CAMBIO: Se cambió padding de md:p-12 a md:p-8 -->
+                    <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-6xl">
+                        <!-- Título rediseñado con número en círculo - CAMBIO a TEAL -->
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6 flex items-center">
+                            <span class="bg-teal-600 text-white text-lg font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4 shadow-md">5</span>
+                            Estrategia y Planificación
+                        </h2>
+                        
+                        <h3 class="text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-4">Estrategias Ofensivas y Defensivas</h3>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                            <li><strong>Ofensivas:</strong> Lanzamientos de productos, expansión a nuevos mercados, adquisiciones.</li>
+                            <li><strong>Defensivas:</strong> Retención de clientes, reposicionamiento, innovación incremental.</li>
+                        </ul>
+
+                        <h3 class="text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-4">"Ganar sin Pelear": La Estrategia del Océano Azul</h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            El concepto de <strong>Océano Azul</strong> es la manifestación moderna de "vencer sin combatir". Mientras el Océano Rojo (mercados saturados) fuerza a competir por precio, el Océano Azul crea espacios sin competencia donde la empresa define las reglas.
+                        </p>
+                        <div class="overflow-x-auto rounded-lg border border-gray-200">
+                            <table class="w-full text-left divide-y divide-gray-200">
+                                <!-- CAMBIO: bg-teal-50 a bg-teal-100 -->
+                                <thead class="bg-teal-100">
+                                    <tr>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase text-center">Empresa</th>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase text-center">Océano Rojo (Antes)</th>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase text-center">Océano Azul (Después)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">Apple</td>
+                                        <td class="px-6 py-4 text-gray-700">Fabricantes de PC compitiendo por precio</td>
+                                        <td class="px-6 py-4 text-gray-700">Experiencia integrada (Hardware+Software)</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">Netflix</td>
+                                        <td class="px-6 py-4 text-gray-700">Tiendas de alquiler de videos</td>
+                                        <td class="px-6 py-4 text-gray-700">Entretenimiento por suscripción y datos</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">Tesla</td>
+                                        <td class="px-6 py-4 text-gray-700">Fabricantes automotrices tradicionales</td>
+                                        <td class="px-6 py-4 text-gray-700">Autos eléctricos e híbridos</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">Airbnb</td>
+                                        <td class="px-6 py-4 text-gray-700">Hoteles compitiendo por ubicación/precio</td>
+                                        <td class="px-6 py-4 text-gray-700">Experiencias de viaje personalizadas</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- FIN: Wrapper centrado -->
+            </section>
+            
+            <!-- Página 7: Marketing -->
+            <section id="page-marketing" class="page-content">
+                <!-- INICIO: Wrapper centrado con max-w -->
+                <div class="flex flex-col items-center">
+                    <!-- CAMBIO: Se cambió padding de md:p-12 a md:p-8 -->
+                    <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-6xl">
+                        <!-- Título rediseñado con número en círculo - CAMBIO a TEAL -->
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6 flex items-center">
+                            <span class="bg-teal-600 text-white text-lg font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4 shadow-md">6</span>
+                            Marketing y Posicionamiento: El Arte de Influir sin Atacar
+                        </h2>
+                        
+                        <h3 class="text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-4">Posicionamiento: Creando el Terreno Mental</h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            El posicionamiento no es lo que haces; es lo que el cliente <strong>cree</strong> que haces. Sun Tzu decía: "Todo el arte de la guerra se basa en el engaño". En marketing ético, "engaño" no es mentir, es <strong>controlar la narrativa</strong>.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            El "engaño" es hacer parecer sencillo lo que es complejo. Esa ilusión de simplicidad vale billones.
+                        </p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                            <li><strong>Apple:</strong> "Think Different" (creatividad, innovación)</li>
+                            <li><strong>Tesla:</strong> "Futuro eléctrico" (sostenibilidad, disrupción)</li>
+                            <li><strong>Nike:</strong> "Just Do It" (inspiración, acción)</li>
+                        </ul>
+
+                        <h3 class="text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-4">Estrategias de Diferenciación</h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            Sun Tzu advierte: "Mantén al enemigo en la incertidumbre". En marketing, esto es la <strong>sorpresa</strong> y la <strong>flexibilidad</strong>.
+                        </p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2">
+                            <li><strong>Caso Apple:</strong> Ha creado un ritual de anuncios selectos, acceso limitado y cobertura mediática generada (no comprada). Esto crea mística y autoridad.</li>
+                            <li><strong>Caso Tesla:</strong> Casi no hace publicidad tradicional. Usa la comunicación estratégica (antes Twitter, ahora X) para que parezca una startup imposible, cuando en realidad es el futuro del automóvil.</li>
+                            <li><strong>Caso Nike:</strong> Mientras otros vendían especificaciones, Nike vendía aspiración e identidad</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- FIN: Wrapper centrado -->
+            </section>
+
+            <!-- Página 8: CRM -->
+            <section id="page-crm" class="page-content">
+                <!-- INICIO: Wrapper centrado con max-w -->
+                <div class="flex flex-col items-center">
+                    <!-- CAMBIO: Se cambió padding de md:p-12 a md:p-8 -->
+                    <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-6xl">
+                        <!-- Título rediseñado con número en círculo - CAMBIO a TEAL -->
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6 flex items-center">
+                            <span class="bg-teal-600 text-white text-lg font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4 shadow-md">7</span>
+                            CRM y Fidelización
+                        </h2>
+                        
+                        <h3 class="text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-4">Convertir Clientes en Aliados Estratégicos</h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            Sun Tzu escribía sobre mantener aliados: es más barato mantener un aliado que ganar uno nuevo.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            La estrategia es simple: <strong>Fase 1: Atracción</strong> (Ganar al cliente), <strong>Fase 2: Retención</strong> (Mantener lealtad), <strong>Fase 3: Expansión</strong> (Convertir en aliado).
+                        </p>
+
+                        <h3 class="text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-4">Segmentación: Conocer al "Aliado"</h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            Un cliente de alto valor (VIP) requiere un tratamiento diferente que uno marginal (Transaccional). Amazon ejecuta esto perfectamente: los usuarios Prime reciben un tratamiento completamente diferente.
+                        </p>
+                        <div class="overflow-x-auto rounded-lg border border-gray-200">
+                            <table class="w-full text-left divide-y divide-gray-200">
+                                <!-- CAMBIO: bg-teal-50 a bg-teal-100 -->
+                                <thead class="bg-teal-100">
+                                    <tr>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase text-center">Segmento</th>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase text-center">Características</th>
+                                        <th class="px-6 py-3 text-sm font-semibold text-gray-600 uppercase text-center">Estrategia CRM</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">VIP / High-Value</td>
+                                        <td class="px-6 py-4 text-gray-700">Alto LTV, frecuencia alta, margen alto</td>
+                                        <td class="px-6 py-4 text-gray-700">Atención personalizada, ejecutivo dedicado.</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">Premium</td>
+                                        <td class="px-6 py-4 text-gray-700">Buen LTV, lealtad media</td>
+                                        <td class="px-6 py-4 text-gray-700">Programas de recompensas, personalización.</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">Transaccional</td>
+                                        <td class="px-6 py-4 text-gray-700">Compras ocasionales, sensible al precio</td>
+                                        <td class="px-6 py-4 text-gray-700">Automatización, ofertas relevantes, autoservicio.</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium">At-Risk (En Riesgo)</td>
+                                        <td class="px-6 py-4 text-gray-700">Antiguamente leales, ahora inactivos</td>
+                                        <td class="px-6 py-4 text-gray-700">Campañas de re-engagement, ofertas especiales.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 class="text-xl md:text-2xl font-semibold text-gray-800 mt-6 mb-4">Programas de Fidelización Integrados con CRM</h3>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2">
+                            <li><strong>Starbucks:</strong> App móvil conectada a CRM, recompensas personalizadas según historial, sorpresas.</li>
+                            <li><strong>Sephora:</strong> Programa de lealtad que combina datos con experiencias personales en tienda.</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- FIN: Wrapper centrado -->
+            </section>
+            
+            <!-- Página 9: Conclusiones -->
+            <section id="page-conclusion" class="page-content">
+                <!-- INICIO: Wrapper centrado con max-w -->
+                <div class="flex flex-col items-center">
+                    <!-- CAMBIO: Se cambió padding de md:p-12 a md:p-8 -->
+                    <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-6xl">
+                        <!-- Título rediseñado con número en círculo - CAMBIO a TEAL -->
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6 flex items-center">
+                            <span class="bg-teal-600 text-white text-lg font-bold rounded-full w-8 h-8 flex items-center justify-center mr-4 shadow-md">8</span>
+                            Conclusiones y Aprendizajes Estratégicos
+                        </h2>
+                        
+                        <!-- INICIO: Contenido de Conclusiones Reestructurado -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+
+                            <!-- Card 1: Acción Táctica - CAMBIO a TEAL -->
+                            <div class="bg-teal-50 rounded-xl shadow-lg p-6 border border-teal-200">
+                                <h3 class="text-2xl font-bold text-teal-700 mb-6">Acción Táctica, ¿Qué Hacer?</h3>
+                                <div class="space-y-6">
+                                    
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-gray-900">"Conoce a tu enemigo y conócete a ti mismo".</h4>
+                                        <p class="text-gray-700 mt-1">Realizar un análisis y mantener una vigilancia competitiva regular.</p>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-gray-900">"Someter al enemigo sin luchar es la suprema excelencia".</h4>
+                                        <p class="text-gray-700 mt-1">Adoptar una Estrategia de Océano Azul. No entrar en guerras de precios.</p>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-gray-900">"El terreno es de importancia vital".</h4>
+                                        <p class="text-gray-700 mt-1">Definir el segmento objetivo con precisión láser.</p>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-gray-900">"El timing es decisivo, no el esfuerzo bruto".</h4>
+                                        <p class="text-gray-700 mt-1">Planificar a 6-12 meses, pero mantener una adaptabilidad a los cambios.</p>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-gray-900">"El talento es tu única ventaja sostenible".</h4>
+                                        <p class="text-gray-700 mt-1">Dedicar una inversión al reclutamiento, desarrollo y retención del equipo.</p>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- Card 2: Mentalidad Estratégica - CAMBIO a TEAL -->
+                            <div class="bg-teal-50 rounded-xl shadow-lg p-6 border border-teal-200">
+                                <h3 class="text-2xl font-bold text-teal-700 mb-6">Mentalidad Estratégica, ¿Cómo Pensar?</h3>
+                                <div class="space-y-6">
+                                    
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-gray-900">Inteligencia vence fuerza</h4>
+                                        <p class="text-gray-700 mt-1">Las decisiones deben estar informadas por datos, no por intuición pura o egos.</p>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-gray-900">Posicionamiento vence precio</h4>
+                                        <p class="text-gray-700 mt-1">Competir por la percepción y la identidad de marca, no solo por ser el más barato.</p>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-gray-900">Adaptabilidad es supervivencia</h4>
+                                        <p class="text-gray-700 mt-1">El contexto cambia constantemente, la estrategia debe ser un organismo vivo y no un plan rígido.</p>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-gray-900">Aliados generan sinergia</h4>
+                                        <p class="text-gray-700 mt-1">Trata a tus clientes como aliados y a tus empleados como colaboradores esenciales.</p>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-gray-900">La victoria es satisfacción</h4>
+                                        <p class="text-gray-700 mt-1">La verdadera victoria no es vencer al competidor, es ganar la lealtad del cliente.</p>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- FIN: Contenido de Conclusiones Reestructurado -->
+
+                    </div>
+                </div>
+                <!-- FIN: Wrapper centrado -->
+            </section>
+
+        </main>
+        <!-- FIN: ÁREA DE CONTENIDO PRINCIPAL -->
+    </div>
+
+    <script>
+        // Función para mostrar la página seleccionada y ocultar las demás
+        function showPage(pageId, element) {
+            // Ocultar todas las secciones de contenido
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Mostrar la sección de contenido seleccionada
+            const selectedPage = document.getElementById('page-' + pageId);
+            if (selectedPage) {
+                selectedPage.classList.add('active');
+                // Al cambiar de página, hacer scroll al inicio del contenido
+                document.querySelector('.content-area').scrollTop = 0;
+            }
+
+            // Actualizar el estado activo en la barra lateral
+            const links = document.querySelectorAll('.sidebar-link');
+            links.forEach(link => {
+                link.classList.remove('active');
+            });
+            if (element) {
+                element.classList.add('active');
+            }
+
+            // --- INICIO: CÓDIGO AÑADIDO PARA RESPONSIVE ---
+            // Si estamos en móvil (pantalla menor a 'md' 768px), cierra el menú
+            if (window.innerWidth < 768) {
+                closeMenu();
+            }
+            // --- FIN: CÓDIGO AÑADIDO PARA RESPONSIVE ---
+        }
+
+        // --- INICIO: CÓDIGO AÑADIDO PARA RESPONSIVE ---
+        // Variables para el menú móvil
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+
+        // Función para abrir el menú
+        function openMenu() {
+            if (sidebar) sidebar.classList.add('open');
+            if (overlay) overlay.classList.remove('hidden');
+            if (menuToggle) menuToggle.setAttribute('aria-expanded', 'true');
+        }
+
+        // Función para cerrar el menú
+        function closeMenu() {
+            if (sidebar) sidebar.classList.remove('open');
+            if (overlay) overlay.classList.add('hidden');
+            if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mostrar la portada por defecto al cargar la página
+            showPage('portada', document.querySelector('.sidebar-link[onclick*="portada"]'));
+
+            // Añadir eventos a los botones del menú
+            if (menuToggle) menuToggle.addEventListener('click', openMenu);
+            if (menuClose) menuClose.addEventListener('click', closeMenu);
+            if (overlay) overlay.addEventListener('click', closeMenu);
+        });
+        // --- FIN: CÓDIGO AÑADIDO PARA RESPONSIVE ---
+    </script>
+
+</body>
+</html>
+
